@@ -1,11 +1,12 @@
 <h1>Dades latitud</h1>
 <label>Latitud mínima</label>
-<input type="number">
+<input type="number" [(ngModel)]="latitudMinima">
 <label>Latitud màxima</label>
-<input type="number">
+<input type="number" [(ngModel)]="latitudMaxima">
 <h1>Dades longitud</h1>
 <label>Longitud mínima</label>
-<input type="number">
+<input type="number" [(ngModel)]="longitudMinima">
 <label>Longitud màxima</label>
-<input type="number">
+<input type="number" [(ngModel)]="longitudMaxima">
 
+<button (click)="guardarDatos()">Obtenir nous punts interés</button>
