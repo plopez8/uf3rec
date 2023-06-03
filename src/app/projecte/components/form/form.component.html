@@ -10,3 +10,10 @@
 <input type="number" [(ngModel)]="longitudMaxima">
 
 <button (click)="guardarDatos()">Obtenir nous punts interés</button>
+<h1>Punts d'interés per:</h1>
+<h1>{{this.latitudText}}</h1>
+<h1>{{this.longitudText}}</h1>
+<br>
+<label>Punts d'interés:</label>
+<select>
+<button (click)="obtenerDatos()">Obtenir dades elevació</button>
