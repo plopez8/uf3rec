@@ -5,7 +5,6 @@ import { opentripmap } from 'src/environments/opentripmap';
   providedIn: 'root'
 })
 export class OpentripmapService {
-  // /en/places/bbox?lon_min=111&lon_max=1&lat_min=1&lat_max=1&format=json&apikey=5ae2e3f221c38a28845f05b602ceda497b722755efa3bf0d84db3d77
   constructor(private http: HttpClient) { }
   
   getInteresPoints(lon_min: number, lon_max: number, lat_min: number, lat_max: number): any {

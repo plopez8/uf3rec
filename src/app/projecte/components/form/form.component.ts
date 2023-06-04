@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Coordenada } from '../../model/implementations/coordenada/coordenada';
 import { PuntsInteres } from '../../model/implementations/puntsinteres/puntsinteres';
 import { OpentripmapService } from '../../services/opentripmap/opentripmap.service';
+import { BingmapsService } from '../../services/bingmaps/bingmaps.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -21,7 +22,7 @@ export class FormComponent {
   puntsInteresSet = new Set<string>();
   puntsInteresArray: PuntsInteres[] = [];
   puntInteresSelect = new PuntsInteres(0, "null", 0, 0);
-  constructor(private opentripmapService: OpentripmapService) {}
+  constructor(private opentripmapService: OpentripmapService, private bingmapsService: BingmapsService) {}
 
   guardarDatos() {
     this.coordenadaMinima.latitud = this.latitudMinima;
@@ -37,7 +38,6 @@ export class FormComponent {
           this.errorText="";
           this.opentripmapService.getInteresPoints(this.coordenadaMinima.longitud, this.coordenadaMaxima.longitud, this.coordenadaMinima.latitud, this.coordenadaMaxima.latitud)
           .subscribe((data: any) => {
-            console.log(data);
             data.forEach((element: any) => {
               if (!this.puntsInteresSet.has(element.xid)) {
                 const puntinteres = new PuntsInteres(element.xid, element.name, element.point.lat, element.point.lon);
@@ -58,19 +58,18 @@ export class FormComponent {
     }else{
       this.errorText = "Els valors no son valids";
     }
-    console.log(this.puntsInteresArray);
   }
   obtenerDatos() {
-    console.log("this.puntInteresSelect");
-    console.log(this.puntInteresSelect.nom);
     if(this.puntInteresSelect.nom == "null"){
       this.text2 = "No s'ha seleccionat punt d'interes";
-      console.log("if"); 
     }else{
       this.text2 = "";
-      console.log("else"); 
-      console.log(this.puntInteresSelect.longitud); 
-      console.log(this.puntInteresSelect.latitud); 
+      this.bingmapsService.getElevation(this.puntInteresSelect.latitud, this.puntInteresSelect.longitud)
+          .subscribe((data: any) => {
+            this.text2 = "Altura sobre el nivell del mar: "+data.resourceSets[0].resources[0].elevations[0];
+          }, (error: any) => {
+            console.error(error);
+          }); 
     }
   }
 }
