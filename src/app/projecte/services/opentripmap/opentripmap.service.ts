@@ -10,4 +10,10 @@ export class OpentripmapService {
   getInteresPoints(lon_min: number, lon_max: number, lat_min: number, lat_max: number): any {
     return this.http.get(opentripmap.apiUrl+'/en/places/bbox?lon_min='+lon_min+'&lon_max='+lon_max+'&lat_min='+lat_min+'&lat_max='+lat_max+'&format=json&apikey=' + opentripmap.apiKey);
   }
+  getPointsStats(lon_min: number, lon_max: number, lat_min: number, lat_max: number, rate: number): any {
+    return this.http.get(opentripmap.apiUrl+'/en/places/bbox?lon_min='+lon_min+'&lon_max='+lon_max+'&lat_min='+lat_min+'&lat_max='+lat_max+'&rate='+rate+'&format=json&apikey=' + opentripmap.apiKey);
+  }
+  getPointsStatsCategory(lon_min: number, lon_max: number, lat_min: number, lat_max: number, kinds: string, rate: number): any {
+    return this.http.get(opentripmap.apiUrl+'/en/places/bbox?lon_min='+lon_min+'&lon_max='+lon_max+'&lat_min='+lat_min+'&lat_max='+lat_max+'&kinds='+kinds+'&rate='+rate+'&format=json&apikey=' + opentripmap.apiKey);
+  }
 }

@@ -1,0 +1,35 @@
+<h1>Dades latitud</h1>
+<label>Latitud mínima</label>
+<input type="number" [(ngModel)]="latitudMinima">
+<label>Latitud màxima</label>
+<input type="number" [(ngModel)]="latitudMaxima">
+<h1>Dades longitud</h1>
+<label>Longitud mínima</label>
+<input type="number" [(ngModel)]="longitudMinima">
+<label>Longitud màxima</label>
+<input type="number" [(ngModel)]="longitudMaxima">
+<h1>-----</h1>
+<label>Categoria</label>
+<input type="text" [(ngModel)]="examcatinput">
+<label>Valoracio</label>
+<input type="number" [(ngModel)]="examvalinput">
+
+<button (click)="guardarDatos()">Obtenir nous punts interés</button>
+<h1>{{this.errorText}}</h1>
+<h1>Punts d'interés per:</h1>
+<h1>{{this.latitudText}}</h1>
+<h1>{{this.longitudText}}</h1>
+<br>
+<label>Punts d'interés:</label>
+<select [(ngModel)]="this.puntInteresSelect">
+    <option *ngFor="let puntInteres of this.puntsInteresArray" [ngValue]="puntInteres">{{ puntInteres.nom }}</option>
+</select>
+<button (click)="obtenerDatos()">Obtenir dades</button>
+<h1>{{this.text2}}</h1>
+<div>
+    <p>{{this.examlat}}</p>
+    <p>{{this.examlong}}</p>
+    <p>{{this.examnom}}</p>
+    <p>{{this.examcat}}</p>
+    <p>{{this.examval}}</p>
+</div>
