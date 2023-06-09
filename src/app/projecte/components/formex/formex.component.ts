@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Coordenada } from '../../model/implementations/coordenada/coordenada';
-import { PuntsInteres } from '../../model/implementations/puntsinteres/puntsinteres';
 import { InteresStats } from '../../model/implementations/interesstats/interesstats';
 import { OpentripmapService } from '../../services/opentripmap/opentripmap.service';
-import { BingmapsService } from '../../services/bingmaps/bingmaps.service';
 
 @Component({
   selector: 'app-formex',
@@ -33,7 +31,7 @@ export class FormexComponent {
   puntsInteresSet = new Set<string>();
   puntsInteresArray: InteresStats[] = [];
   puntInteresSelect = new InteresStats(0, "null", 0, 0, "", 0);
-  constructor(private opentripmapService: OpentripmapService, private bingmapsService: BingmapsService) {}
+  constructor(private opentripmapService: OpentripmapService) {}
 
   guardarDatos() {
     this.coordenadaMinima.latitud = this.latitudMinima;
@@ -48,7 +46,7 @@ export class FormexComponent {
         if(this.coordenadaMinima.longitud <= this.coordenadaMaxima.longitud){
           this.errorText="";
           if (this.examcatinput != "") {
-            this.opentripmapService.getPointsStatsCategory(this.coordenadaMinima.longitud, this.coordenadaMaxima.longitud, this.coordenadaMinima.latitud, this.coordenadaMaxima.latitud, this.examcatinput, this.examvalinput)
+            this.opentripmapService.getPointsStatsCategory(this.coordenadaMinima, this.coordenadaMaxima, this.examcatinput, this.examvalinput)
             .subscribe((data: any) => {
               data.forEach((element: any) => {
                 if (!this.puntsInteresSet.has(element.xid)) {
@@ -63,7 +61,7 @@ export class FormexComponent {
               this.errorText = "Categoria invailda";
             });
           } else {
-            this.opentripmapService.getPointsStats(this.coordenadaMinima.longitud, this.coordenadaMaxima.longitud, this.coordenadaMinima.latitud, this.coordenadaMaxima.latitud, this.examvalinput)
+            this.opentripmapService.getPointsStats(this.coordenadaMinima, this.coordenadaMaxima, this.examvalinput)
             .subscribe((data: any) => {
               data.forEach((element: any) => {
                 if (!this.puntsInteresSet.has(element.xid)) {

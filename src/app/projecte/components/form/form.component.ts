@@ -13,10 +13,30 @@ export class FormComponent {
   longitudText = "Longitud: --";
   errorText = "";
   text2 = "";
+  copy = "";
+  logourl = "";
+  typeview = "";
+  imagemap = "";
+  hidediv = false;
+  typeviews = [
+    { text: "Aerial", value: "Aerial" },
+    { text: "Aerial With Lables On Demand", value: "AerialWithLabelsOnDemand" },
+    { text: "Birdseye", value: "null" },
+    { text: "Birdseye2", value: "null" },
+    { text: "Birdseye With Labels", value: "null" },
+    { text: "Birdseye V2 With Labels", value: "null" },
+    { text: "Canvas Dark", value: "CanvasDark" },
+    { text: "Canvas Light", value: "CanvasLight" },
+    { text: "Canvas Gray", value: "CanvasGray" },
+    { text: "Ordnance Survey", value: "null" },
+    { text: "Road On Demand", value: "Road" },
+    { text: "Streetside", value: "Streetside" }
+  ];
   latitudMinima: number = 0;
   latitudMaxima: number = 0;
   longitudMinima: number = 0;
   longitudMaxima: number = 0;
+  zoomView: number = 0;
   coordenadaMinima = new Coordenada(this.latitudMinima, this.longitudMinima);
   coordenadaMaxima = new Coordenada(this.latitudMaxima, this.longitudMaxima);
   puntsInteresSet = new Set<string>();
@@ -36,7 +56,7 @@ export class FormComponent {
       if(this.coordenadaMinima.latitud <= this.coordenadaMaxima.latitud){
         if(this.coordenadaMinima.longitud <= this.coordenadaMaxima.longitud){
           this.errorText="";
-          this.opentripmapService.getInteresPoints(this.coordenadaMinima.longitud, this.coordenadaMaxima.longitud, this.coordenadaMinima.latitud, this.coordenadaMaxima.latitud)
+          this.opentripmapService.getInteresPoints(this.coordenadaMinima, this.coordenadaMaxima)
           .subscribe((data: any) => {
             data.forEach((element: any) => {
               if (!this.puntsInteresSet.has(element.xid)) {
@@ -45,6 +65,12 @@ export class FormComponent {
                 this.puntsInteresSet.add(element.xid);
               }
             });
+            if (this.puntsInteresSet.size > 0) {
+              this.hidediv = true;
+              if (!this.typeview) {
+                this.typeview = "Aerial";
+              }
+            }     
           }, (error: any) => {
             console.error(error);
           });
@@ -62,14 +88,43 @@ export class FormComponent {
   obtenerDatos() {
     if(this.puntInteresSelect.nom == "null"){
       this.text2 = "No s'ha seleccionat punt d'interes";
+      this.logourl = "";
+      this.copy = "";
     }else{
       this.text2 = "";
-      this.bingmapsService.getElevation(this.puntInteresSelect.latitud, this.puntInteresSelect.longitud)
+      this.bingmapsService.getElevation( this.puntInteresSelect)
           .subscribe((data: any) => {
             this.text2 = "Altura sobre el nivell del mar: "+data.resourceSets[0].resources[0].elevations[0];
+            this.logourl = data.brandLogoUri;
+            this.copy = data.copyright;
           }, (error: any) => {
             console.error(error);
-          }); 
+            this.logourl = "";
+            this.copy = "";
+          });
+          this.changeTypeView();
+    }
+
+  }
+
+  changeTypeView(){
+    if (this.puntInteresSelect.nom == "null") {
+      alert("No s'ha seleccionat punt");
+    }else{
+      if(this.typeview == "null"){
+        alert("No se permite esta vista");
+      }else{
+        if(this.zoomView <= 20 && this.zoomView >= 0){
+          this.imagemap = this.bingmapsService.getImage(this.puntInteresSelect, this.zoomView, this.typeview)
+        }else{
+          alert("Zoom te que estar entre 0 i 20");
+        }
+      }
     }
   }
+
+  onTypeviewChange() {
+        this.changeTypeView();
+  }
+
 }

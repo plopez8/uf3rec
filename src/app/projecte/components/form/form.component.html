@@ -16,8 +16,22 @@
 <h1>{{this.longitudText}}</h1>
 <br>
 <label>Punts d'interés:</label>
+<h1>{{this.text2}}</h1>
+<div *ngIf="this.hidediv">
+    <label>Zoom</label>
+    <input type="number" [(ngModel)]="zoomView">
+    <label>Vista</label>
+    <select [(ngModel)]="typeview" (ngModelChange)="onTypeviewChange()">
+        <option *ngFor="let typeview of typeviews" [ngValue]="typeview.value">{{ typeview.text }}</option>
+    </select>      
+</div>
 <select [(ngModel)]="this.puntInteresSelect">
     <option *ngFor="let puntInteres of this.puntsInteresArray" [ngValue]="puntInteres">{{ puntInteres.nom }}</option>
 </select>
 <button (click)="obtenerDatos()">Obtenir dades elevació</button>
-<h1>{{this.text2}}</h1>
+<br>
+<img src="{{this.imagemap}}">
+<div>
+    <img src="{{this.logourl}}">
+    <p>{{this.copy}}</p>
+</div>
